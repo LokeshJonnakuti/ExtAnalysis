@@ -37,9 +37,8 @@ def view(analysis_id, file_id):
     sources_file = os.path.join(analysis_path, 'source.json')
 
     if os.path.isfile(sources_file):
-        # valid source
-        s = open(sources_file, 'r')
-        sources = json.loads(s.read())
+        with open(sources_file, 'r') as s:
+            sources = json.loads(s.read())
         try:
             file_info = sources[file_id]
             file_name = file_info['file_name']
@@ -61,8 +60,8 @@ def view(analysis_id, file_id):
             file_icon = '<img src="' + icon_url + '">'
             file_type = ('javascript' if file_type == 'js' else file_type)
             try:
-                fs = open(file_location, 'r', encoding='utf8')
-                file_source = fs.read()
+                with open(file_location, 'r', encoding='utf8') as fs:
+                    file_source = fs.read()
                 file_size = str(os.path.getsize(file_location) >> 10) + ' KB'
                 return render_template('source.html', file_name = file_name, file_source = file_source, file_id = file_id, file_location = file_location, file_type = file_type, file_size = file_size, file_icon = file_icon)
             except Exception as e:

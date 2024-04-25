@@ -72,11 +72,10 @@ def update():
     2. End self process and start the child script
     '''
     print("\n[i] Creating Updater file")
+    with open(helper.fixpath(core.path + '/db/updater.py'), 'r') as child_script:
+        child_script = child_script.read()
 
-    child_script = open(helper.fixpath(core.path + '/db/updater.py'), 'r')
-    child_script = child_script.read()
-
-    src = child_script.replace('<current_extanalysis_directory>', core.path.replace('\\', '\\\\'))
+        src = child_script.replace('<current_extanalysis_directory>', core.path.replace('\\', '\\\\'))
     src = src.replace('<github_zip_url>', core.github_zip)
 
     print('[i] Moving updater file to temp directory')

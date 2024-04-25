@@ -175,8 +175,8 @@ def extract_urls(file_path):
     updatelog('Extracting URLs From: ' + file_path)
     urls = []
     try:
-        cnt = open(helper.fixpath(file_path), 'r', encoding='utf8')
-        contents = cnt.read()
+        with open(helper.fixpath(file_path), 'r', encoding='utf8') as cnt:
+            contents = cnt.read()
         curls = re.findall('(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?', contents)
         for url in curls:
             urls.append(url[0]+'://'+url[1]+url[2])
@@ -243,21 +243,21 @@ def GetNameFromManifest(manifest_file):
                             ldirs = os.listdir(locale_dir)
                             for dir in ldirs:
                                 if os.path.isfile(helper.fixpath(locale_dir + '/' + dir + '/messages.json')):
-                                    locale_content = open(helper.fixpath(locale_dir + '/' + dir + '/messages.json'), 'r')
-                                    try:
-                                        en_locale_content = json.loads(locale_content.read())
-                                        if manifest_message in locale_content:
-                                            ext_name = en_locale_content[manifest_message]['message']
-                                            updatelog('Extension name grabbed from en locale file.. Name: ' + ext_name)
-                                            return ext_name
-                                        else:
-                                            updatelog('Could not find name')
-                                            return False
+                                    with open(helper.fixpath(locale_dir + '/' + dir + '/messages.json'), 'r') as locale_content:
+                                        try:
+                                            en_locale_content = json.loads(locale_content.read())
+                                            if manifest_message in locale_content:
+                                                ext_name = en_locale_content[manifest_message]['message']
+                                                updatelog('Extension name grabbed from en locale file.. Name: ' + ext_name)
+                                                return ext_name
+                                            else:
+                                                updatelog('Could not find name')
+                                                return False
 
-                                    except Exception as e:
-                                        updatelog('Something went wrong while reading or parsing en locale file...')
-                                        logging.error(traceback.format_exc())
-                                        return False
+                                        except Exception as e:
+                                            updatelog('Something went wrong while reading or parsing en locale file...')
+                                            logging.error(traceback.format_exc())
+                                            return False
                     else:
                         # _locale dir doesn't exist let's just go...
                         updatelog('_locale directory doesn\'t exist.. dir: ' + locale_dir)
@@ -327,21 +327,21 @@ def GetDescriptionFromManifest(manifest_file):
                             ldirs = os.listdir(locale_dir)
                             for dir in ldirs:
                                 if os.path.isfile(helper.fixpath(locale_dir + '/' + dir + '/messages.json')):
-                                    locale_content = open(helper.fixpath(locale_dir + '/' + dir + '/messages.json'), 'r', encoding="utf8")
-                                    try:
-                                        en_locale_content = json.loads(locale_content.read())
-                                        if manifest_message in locale_content:
-                                            ext_desc = en_locale_content[manifest_message]['message']
-                                            updatelog('Extension description grabbed from ' + dir + ' locale file.. description: ' + ext_desc)
-                                            return ext_desc
-                                        else:
-                                            updatelog('Could not find description')
-                                            return False
+                                    with open(helper.fixpath(locale_dir + '/' + dir + '/messages.json'), 'r', encoding="utf8") as locale_content:
+                                        try:
+                                            en_locale_content = json.loads(locale_content.read())
+                                            if manifest_message in locale_content:
+                                                ext_desc = en_locale_content[manifest_message]['message']
+                                                updatelog('Extension description grabbed from ' + dir + ' locale file.. description: ' + ext_desc)
+                                                return ext_desc
+                                            else:
+                                                updatelog('Could not find description')
+                                                return False
 
-                                    except Exception as e:
-                                        updatelog('Something went wrong while reading or parsing en locale file...')
-                                        logging.error(traceback.format_exc())
-                                        return False
+                                        except Exception as e:
+                                            updatelog('Something went wrong while reading or parsing en locale file...')
+                                            logging.error(traceback.format_exc())
+                                            return False
                     else:
                         # _locale dir doesn't exist let's just go...
                         updatelog('_locale directory doesn\'t exist.. dir: ' + locale_dir)

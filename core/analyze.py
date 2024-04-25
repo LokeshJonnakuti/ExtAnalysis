@@ -162,8 +162,8 @@ def analyze(ext_name, ext_type='local'):
     try:
         core.updatelog('Reading manifest.json')
         manifest_file = helper.fixpath(extract_dir + '/manifest.json')
-        manifest_load = open(manifest_file, 'r')
-        manifest_content = manifest_load.read()
+        with open(manifest_file, 'r') as manifest_load:
+            manifest_content = manifest_load.read()
         manifest_content = json.loads(manifest_content)
         rinit = core.initreport(manifest_content, extract_dir, ext_type)
         if not rinit:
@@ -247,8 +247,8 @@ def analyze(ext_name, ext_type='local'):
         for allfiles in (js_files, html_files, json_files, css_files):
             for file in allfiles:
                 try:
-                    cnt = open(file, 'r', encoding="utf8")
-                    contents = cnt.read()
+                    with open(file, 'r', encoding="utf8") as cnt:
+                        contents = cnt.read()
                     relpath = os.path.relpath(file, extract_dir)
                     core.updatelog('Extracting intels from: ' + file)
                     intels = intel.extract(contents, relpath)

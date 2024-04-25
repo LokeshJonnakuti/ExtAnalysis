@@ -223,8 +223,8 @@ class createresult:
             graph_data_stat = self.creategraphdata()
             if graph_data_stat != False:
                 graph_file = helper.fixpath(result_directory + '/graph.data')
-                graph_file_create = open(graph_file, 'w+')
-                graph_file_create.write(self.nodes + '\n' + self.edges)
+                with open(graph_file, 'w+') as graph_file_create:
+                    graph_file_create.write(self.nodes + '\n' + self.edges)
                 core.updatelog('Saved graph data to: ' + graph_file)
             else:
                 core.updatelog('Could not save graph data!')

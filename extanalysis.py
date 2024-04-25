@@ -108,12 +108,12 @@ def internal_error(e):
 @app.route("/")
 def home():
     core.updatelog('Accessed Main page')
-    lic = open(helper.fixpath(core.path + '/LICENSE'), 'r')
-    license_text = lic.read()
-    cred = open(helper.fixpath(core.path + '/CREDITS'), 'r')
-    credits_text = cred.read()
-    sett = open(core.settings_file, 'r')
-    settings_json = sett.read()
+    with open(helper.fixpath(core.path + '/LICENSE'), 'r') as lic:
+        license_text = lic.read()
+    with open(helper.fixpath(core.path + '/CREDITS'), 'r') as cred:
+        credits_text = cred.read()
+    with open(core.settings_file, 'r') as sett:
+        settings_json = sett.read()
     return render_template("index.html",
                            report_dir=core.reports_path,
                            lab_dir=core.lab_path,

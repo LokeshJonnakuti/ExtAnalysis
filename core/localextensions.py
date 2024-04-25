@@ -244,16 +244,16 @@ class GetLocalExtensions():
         
         # Read the final list and then create return list and return it
         firefox_extensions_list = []
-        read_list = open(exta_firefox_list, 'r')
-        read_list = json.loads(read_list.read())
-        if read_list['extensions'] != {}:
-            # There are some extensions
-            for fext in read_list['extensions']:
-                prepare_to_insert = read_list['extensions'][fext]['name'] + ',' + read_list['extensions'][fext]['file']
-                firefox_extensions_list.append(prepare_to_insert)
-            return firefox_extensions_list
-        else:
-            core.updatelog('ExtAnalysis could not find any local firefox extensions')
+        with open(exta_firefox_list, 'r') as read_list:
+            read_list = json.loads(read_list.read())
+            if read_list['extensions'] != {}:
+                # There are some extensions
+                for fext in read_list['extensions']:
+                    prepare_to_insert = read_list['extensions'][fext]['name'] + ',' + read_list['extensions'][fext]['file']
+                    firefox_extensions_list.append(prepare_to_insert)
+                return firefox_extensions_list
+            else:
+                core.updatelog('ExtAnalysis could not find any local firefox extensions')
 
     def createFirefoxListing(self, extension_directory, xpi_file):
         list_file = os.path.join(extension_directory, 'extanalysis.json')
