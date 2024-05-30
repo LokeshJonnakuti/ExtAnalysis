@@ -37,14 +37,14 @@ def scan_url(url):
         core.updatelog('Using api: ' + virustotal_api)
     vturl = 'https://www.virustotal.com/vtapi/v2/url/scan'
     params = {'apikey': virustotal_api, 'url':url}
-    response = requests.post(vturl, data=params)
+    response = requests.post(vturl, data=params, timeout=60)
     response = response.json()
     if response['response_code'] == 1:
         core.updatelog('URL queued for scan! getting report after 10 seconds...')
         time.sleep(10)
         newurl = 'https://www.virustotal.com/vtapi/v2/url/report'
         newparams = {'apikey': virustotal_api, 'resource':url}
-        newresponse = requests.get(newurl, params=newparams)
+        newresponse = requests.get(newurl, params=newparams, timeout=60)
         finalresp = newresponse.json()
         if finalresp['response_code'] == 1:
             print('{0}/{1} - {2}'.format(finalresp['positives'], finalresp['total'], finalresp['permalink']))
@@ -62,7 +62,7 @@ def scan_domain(domain):
     try:
         url = 'https://www.virustotal.com/vtapi/v2/domain/report'
         params = {'apikey':tvirustotal_api,'domain':domain}
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=60)
         response = response.json()
         if response['response_code'] == 1:
             return [True, response]
@@ -96,7 +96,7 @@ def domain_batch_scan(domains):
             try:
                 url = 'https://www.virustotal.com/vtapi/v2/domain/report'
                 params = {'apikey':core.virustotal_api,'domain':domain}
-                response = requests.get(url, params=params)
+                response = requests.get(url, params=params, timeout=60)
                 response = response.json()
                 if response['response_code'] == 1:
                     batch_result[domain] = [True, response]
