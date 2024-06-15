@@ -1,11 +1,12 @@
 import re
+from security import safe_requests
+
 try:
     from .vulnerabilities import definitions
 except:
     from vulnerabilities import definitions
 
 import hashlib
-import requests
 
 
 def is_defined(o):
@@ -173,7 +174,7 @@ def scan_endpoint(uri, definitions=definitions):
     """
     uri_scan_result = scan_uri(uri, definitions)
 
-    filecontent = requests.get(uri, verify=False).text
+    filecontent = safe_requests.get(uri, verify=False).text
     filecontent_scan_result = scan_file_content(filecontent, definitions)
 
     uri_scan_result.extend(filecontent_scan_result)

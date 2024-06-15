@@ -21,6 +21,7 @@ import requests
 import random
 import time
 import logging, traceback
+from security import safe_requests
 
 pub_vt = []
 ## add extra virustotal apis if you have any! helps in faster scan. format: pub_vt = ['api1', 'api2']
@@ -44,7 +45,7 @@ def scan_url(url):
         time.sleep(10)
         newurl = 'https://www.virustotal.com/vtapi/v2/url/report'
         newparams = {'apikey': virustotal_api, 'resource':url}
-        newresponse = requests.get(newurl, params=newparams)
+        newresponse = safe_requests.get(newurl, params=newparams)
         finalresp = newresponse.json()
         if finalresp['response_code'] == 1:
             print('{0}/{1} - {2}'.format(finalresp['positives'], finalresp['total'], finalresp['permalink']))
@@ -62,7 +63,7 @@ def scan_domain(domain):
     try:
         url = 'https://www.virustotal.com/vtapi/v2/domain/report'
         params = {'apikey':tvirustotal_api,'domain':domain}
-        response = requests.get(url, params=params)
+        response = safe_requests.get(url, params=params)
         response = response.json()
         if response['response_code'] == 1:
             return [True, response]
@@ -96,7 +97,7 @@ def domain_batch_scan(domains):
             try:
                 url = 'https://www.virustotal.com/vtapi/v2/domain/report'
                 params = {'apikey':core.virustotal_api,'domain':domain}
-                response = requests.get(url, params=params)
+                response = safe_requests.get(url, params=params)
                 response = response.json()
                 if response['response_code'] == 1:
                     batch_result[domain] = [True, response]
