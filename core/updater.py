@@ -24,6 +24,7 @@ import os
 import sys
 import tempfile
 import subprocess
+from security import safe_command
 
 def check():
     '''
@@ -94,12 +95,12 @@ def update():
     if sys.platform == 'win32':
         os.chdir(temp_dir)
         command = [python_loc, 'update_extanalysis.py']
-        subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_CONSOLE, shell=False)
+        safe_command.run(subprocess.Popen, command, creationflags=subprocess.CREATE_NEW_CONSOLE, shell=False)
         print('[i] Killing self... Next time we meet I will be a better version of myself ;)')
         exit()
     else:
         os.chdir(temp_dir)
         command = ['x-terminal-emulator', '-e', python_loc, updater_script]
-        subprocess.Popen(command, shell=False)
+        safe_command.run(subprocess.Popen, command, shell=False)
         print('[i] Killing self... Next time we meet I will be a better version of myself ;)')
         exit()
