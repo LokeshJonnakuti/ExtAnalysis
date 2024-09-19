@@ -15,10 +15,9 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-
-import requests
 import core.core as core
 import logging, traceback
+from security import safe_requests
 
 
 def geoip(ip):
@@ -30,7 +29,7 @@ def geoip(ip):
     core.updatelog('Initiating Geo-IP Lookup for address: ' + ip)
     try:
         lookup_url = 'https://ipapi.co/{0}/json'.format(ip)
-        lookup = requests.get(lookup_url)
+        lookup = safe_requests.get(lookup_url)
         lookup = lookup.json()
         try:
             if lookup['error']:
@@ -53,7 +52,7 @@ def http_headers(url):
     '''
     core.updatelog('Getting HTTP Headers of: ' + url)
     try:
-        req = requests.get(url)
+        req = safe_requests.get(url)
         headers = req.headers
         core.updatelog('HTTP Headers successfully acquired!')
         return [True, headers]
@@ -70,7 +69,7 @@ def source_code(url):
     '''
     core.updatelog('Getting Source code of: ' + url)
     try:
-        req = requests.get(url)
+        req = safe_requests.get(url)
         headers = req.text
         core.updatelog('Source code successfully acquired!')
         return [True, headers]
