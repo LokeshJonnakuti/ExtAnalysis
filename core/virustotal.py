@@ -18,9 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import core.core as core
 import requests
-import random
 import time
 import logging, traceback
+import secrets
 
 pub_vt = []
 ## add extra virustotal apis if you have any! helps in faster scan. format: pub_vt = ['api1', 'api2']
@@ -33,7 +33,7 @@ def scan_url(url):
     global pub_vt, virustotal_api
     if virustotal_api == "":
         # get a random virustotal api
-        virustotal_api = random.choice(pub_vt)
+        virustotal_api = secrets.choice(pub_vt)
         core.updatelog('Using api: ' + virustotal_api)
     vturl = 'https://www.virustotal.com/vtapi/v2/url/scan'
     params = {'apikey': virustotal_api, 'url':url}
@@ -57,7 +57,7 @@ def scan_url(url):
 def scan_domain(domain):
     global pub_vt
     # get a random virustotal api
-    tvirustotal_api = random.choice(pub_vt)
+    tvirustotal_api = secrets.choice(pub_vt)
     core.updatelog('Using api: ' + tvirustotal_api)
     try:
         url = 'https://www.virustotal.com/vtapi/v2/domain/report'
